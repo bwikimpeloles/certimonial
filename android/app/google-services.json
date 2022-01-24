@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "805197208405",
+    "project_id": "certimonial",
+    "storage_bucket": "certimonial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805197208405:android:3e9c5c76a2547d77176ddc",
+        "android_client_info": {
+          "package_name": "com.example.certimonial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805197208405-qegbn1u50t552ftuc65fqvtsm1i6ionr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG0OpAAt4flvoSi80Lxe4Zn2RsFbK1o_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805197208405-qegbn1u50t552ftuc65fqvtsm1i6ionr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
