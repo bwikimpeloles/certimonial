@@ -1,4 +1,3 @@
-//model for registration and login
 class UserModel {
   String? uid;
   String? email;

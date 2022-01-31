@@ -1,11 +1,12 @@
-//home screen
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'user_model.dart';
+import '/screen/firstpage.dart';
+import '../model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
 
+//this page is only for email login
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -33,10 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Welcome"),
-        centerTitle: true,
-      ),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -68,7 +65,20 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 15,
               ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FirstPage()),
+                  );
+                },
+                child: Text(
+                  'Click here to go to First Page',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
               ActionChip(
+                  avatar: Icon(Icons.logout),
                   label: Text("Logout"),
                   onPressed: () {
                     logout(context);

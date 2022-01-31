@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">certimonial</string>
+    <string name="facebook_app_id">243802881268819</string>
+    <string name="fb_login_protocol_scheme">fb243802881268819</string>
+    <string name="facebook_client_token">59195d3d6fed34667a2c16619abc31a7</string>
+
+</resources>
