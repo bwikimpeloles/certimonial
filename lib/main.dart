@@ -12,9 +12,11 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color(0xFF151026);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -23,9 +25,10 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Certimonial',
+        debugShowCheckedModeBanner:false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.deepOrange,
         ),
         home: LoginScreen(),
       ),

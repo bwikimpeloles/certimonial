@@ -29,7 +29,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('First Page'),
+        title: const Text('Dashboard'),
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () async {
@@ -43,8 +43,145 @@ class _FirstPageState extends State<FirstPage> {
               label: Text('Logout'))
         ],
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(16.0), child: Text('Firstpage')),
+      body: GridView.count(
+        primary: false,
+        padding: const EdgeInsets.all(10),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 3,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              icon: Icon(
+                Icons.folder,
+              ),
+              iconSize: 65.0,
+              color: Colors.deepOrange,
+              splashColor: Colors.orange,
+              onPressed: () {},
+            ),
+            color: Colors.orange[200],
+          ),
+        ],
+      ),
     );
   }
 }

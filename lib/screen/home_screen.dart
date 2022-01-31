@@ -63,20 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w500,
                   )),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FirstPage()),
-                  );
-                },
-                child: Text(
-                  'Click here to go to First Page',
-                  style: TextStyle(color: Colors.black),
+              SizedBox(
+                  height: 50,
+                  child: ActionChip(
+                      avatar: Icon(Icons.dashboard),
+                      label: Text("Continue to Dashboard"),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FirstPage()),
+                      );
+                    },),
                 ),
-              ),
+                //Text(
+                 // 'Click here to go to First Page',
+                 // style: TextStyle(color: Colors.black),
+                //),
+
               ActionChip(
                   avatar: Icon(Icons.logout),
                   label: Text("Logout"),
