@@ -76,21 +76,30 @@ class _LoginScreenState extends State<LoginScreen> {
           "Welcome Back",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
+        SizedBox(
+          height: 10,
+        ),
         Text(model.userDetails!.displayName ?? ""),
         Text(model.userDetails!.email ?? ""),
-
-        TextButton(
-          onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FirstPage()),
-            );
-          },
-          child: Text(
-            'Click here to go to First Page',
-            style: TextStyle(color: Colors.black),
-          ),
+        SizedBox(
+          height: 10,
         ),
+        SizedBox(
+          height: 50,
+          child: ActionChip(
+            avatar: Icon(Icons.dashboard),
+            label: Text("Continue to Dashboard"),
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FirstPage()),
+              );
+            },),
+        ),
+        //Text(
+        // 'Click here to go to First Page',
+        // style: TextStyle(color: Colors.black),
+        //),
 
         // logout
         ActionChip(
