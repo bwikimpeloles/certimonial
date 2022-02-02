@@ -41,10 +41,22 @@ dependencies:
   provider: ^6.0.2
   fluttertoast: ^8.0.8
   font_awesome_flutter: ^9.2.0
-
+  
 
   google_sign_in: ^5.2.3
   flutter_facebook_auth: ^4.0.1
+  
+
+  firebase_storage: ^10.2.4
+  
+  transparent_image: ^2.0.0
+  path_provider: ^2.0.8
+ 
+  file_picker: ^4.3.3
+  image_picker: ^0.8.4+5
+  google_fonts: ^2.2.0
+  local_auth: ^1.1.10
+
 
 
 dev_dependencies:

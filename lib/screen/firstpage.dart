@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/controllers/login_controller.dart';
 import '/screen/login_screen.dart';
+import 'addpage.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -14,16 +15,6 @@ class FirstPage extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds the data related to the Form.
 class _FirstPageState extends State<FirstPage> {
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
-  final myController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +173,14 @@ class _FirstPageState extends State<FirstPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddPage()),
+            );
+          }),
     );
   }
 }
