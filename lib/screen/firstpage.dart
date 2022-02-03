@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '/controllers/login_controller.dart';
 import '/screen/login_screen.dart';
 import 'addpage.dart';
@@ -15,6 +18,27 @@ class FirstPage extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds the data related to the Form.
 class _FirstPageState extends State<FirstPage> {
+  User? user = FirebaseAuth.instance.currentUser;
+  FirebaseStorage storage = FirebaseStorage.instance;
+
+  // Retrieve the uploaded images
+  // This function is called when the app launches for the first time or when an image is uploaded or deleted
+  Future<List<Map<String, dynamic>>> _loadFiles() async {
+    List<Map<String, dynamic>> files = [];
+
+    final ListResult result = await storage.ref().child(user!.uid).list();
+    final List<Reference> allFiles = result.items;
+
+    await Future.forEach<Reference>(allFiles, (file) async {
+      final String fileUrl = await file.getDownloadURL();
+      files.add({
+        "url": fileUrl,
+        "path": file.fullPath,
+      });
+    });
+
+    return files;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,148 +54,41 @@ class _FirstPageState extends State<FirstPage> {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
-              icon: Icon(Icons.logout),
-              label: Text('Logout'))
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ))
         ],
       ),
-      body: GridView.count(
-        primary: false,
-        padding: const EdgeInsets.all(10),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 3,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: IconButton(
-              icon: Icon(
-                Icons.folder,
-              ),
-              iconSize: 65.0,
-              color: Colors.deepOrange,
-              splashColor: Colors.orange,
-              onPressed: () {},
-            ),
-            color: Colors.orange[200],
-          ),
-        ],
+      body: FutureBuilder(
+        future: _loadFiles(),
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return GridView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemBuilder: (context, index) {
+                  final Map<String, dynamic> image = snapshot.data![index];
+                  return Container(
+                      margin: EdgeInsets.all(3),
+                      child: FadeInImage.memoryNetwork(
+                          fit: BoxFit.cover,
+                          placeholder: kTransparentImage,
+                          image: Image.network(image['url']).toString()));
+                });
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
