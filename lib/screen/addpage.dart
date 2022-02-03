@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import '/screen/firstpage.dart';
+
+//this class is for uploading file or image from gallery and camera
 
 class AddPage extends StatefulWidget {
   @override
@@ -73,6 +74,29 @@ class _AddPageState extends State<AddPage> {
               color: Colors.deepOrange,
             ),
             SizedBox(
+              height: 20,
+            ),
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20.0),
+                ),
+              ),
+              elevation: 5.0,
+              height: 60,
+              onPressed: () {
+                getCamera();
+              },
+              child: Text(
+                "Take photo",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              color: Colors.deepOrange,
+            ),
+            SizedBox(
               height: 10,
             ),
           ],
@@ -116,6 +140,16 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
+  getCamera() async {
+    var img = await image.pickImage(source: ImageSource.camera);
+    setState(() {
+      file = File(img!.path);
+    });
+    if (file != null) {
+      uploadFile();
+    }
+  }
+
   uploadFile() async {
     try {
       var imagefile =
@@ -125,6 +159,7 @@ class _AddPageState extends State<AddPage> {
       url = await snapshot.ref.getDownloadURL();
 
       print(url);
+
       if (url != null && file != null) {
         Fluttertoast.showToast(
           msg: "Done Uploaded",
