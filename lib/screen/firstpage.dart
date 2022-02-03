@@ -81,7 +81,7 @@ class _FirstPageState extends State<FirstPage> {
                       child: FadeInImage.memoryNetwork(
                           fit: BoxFit.cover,
                           placeholder: kTransparentImage,
-                          image: Image.network(image['url']).toString()));
+                          image: image['url']));
                 });
           }
 
