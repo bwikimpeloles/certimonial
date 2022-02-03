@@ -42,7 +42,7 @@ class _AddPageState extends State<AddPage> {
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               elevation: 5.0,
               height: 60,
-              minWidth: 300,
+              minWidth: 250,
               onPressed: () {
                 getfile();
               },
@@ -67,7 +67,7 @@ class _AddPageState extends State<AddPage> {
               ),
               elevation: 5.0,
               height: 60,
-              minWidth: 300,
+              minWidth: 250,
               onPressed: () {
                 getImage();
               },
@@ -92,7 +92,7 @@ class _AddPageState extends State<AddPage> {
               ),
               elevation: 5.0,
               height: 60,
-              minWidth: 300,
+              minWidth: 250,
               onPressed: () {
                 getCamera();
               },
