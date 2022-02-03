@@ -1,3 +1,4 @@
+import 'package:certimonial/screen/displayFull.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -76,12 +77,20 @@ class _FirstPageState extends State<FirstPage> {
                     crossAxisCount: 3),
                 itemBuilder: (context, index) {
                   final Map<String, dynamic> image = snapshot.data![index];
-                  return Container(
-                      margin: EdgeInsets.all(3),
-                      child: FadeInImage.memoryNetwork(
-                          fit: BoxFit.cover,
-                          placeholder: kTransparentImage,
-                          image: image['url']));
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => DisplayFull(
+                                url: image['url'],
+                              )));
+                    },
+                    child: Container(
+                        margin: EdgeInsets.all(4),
+                        child: FadeInImage.memoryNetwork(
+                            fit: BoxFit.fill,
+                            placeholder: kTransparentImage,
+                            image: image['url'])),
+                  );
                 });
           }
 
