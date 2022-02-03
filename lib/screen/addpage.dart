@@ -33,11 +33,16 @@ class _AddPageState extends State<AddPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 200,
+              child: Image.asset("assets/logo.png", fit: BoxFit.contain),
+            ),
             MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
               elevation: 5.0,
               height: 60,
+              minWidth: 300,
               onPressed: () {
                 getfile();
               },
@@ -46,6 +51,7 @@ class _AddPageState extends State<AddPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
+                  color: Colors.white
                 ),
               ),
               color: Colors.deepOrange,
@@ -61,6 +67,7 @@ class _AddPageState extends State<AddPage> {
               ),
               elevation: 5.0,
               height: 60,
+              minWidth: 300,
               onPressed: () {
                 getImage();
               },
@@ -69,6 +76,7 @@ class _AddPageState extends State<AddPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
+                  color: Colors.white
                 ),
               ),
               color: Colors.deepOrange,
@@ -84,6 +92,7 @@ class _AddPageState extends State<AddPage> {
               ),
               elevation: 5.0,
               height: 60,
+              minWidth: 300,
               onPressed: () {
                 getCamera();
               },
@@ -92,6 +101,7 @@ class _AddPageState extends State<AddPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
+                  color: Colors.white
                 ),
               ),
               color: Colors.deepOrange,
