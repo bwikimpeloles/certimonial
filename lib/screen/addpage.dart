@@ -47,7 +47,7 @@ class _AddPageState extends State<AddPage> {
                 getfile();
               },
               child: Text(
-                "Add file",
+                "Add File",
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
@@ -72,7 +72,7 @@ class _AddPageState extends State<AddPage> {
                 getImage();
               },
               child: Text(
-                "Add image",
+                "Add Image",
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
@@ -97,7 +97,7 @@ class _AddPageState extends State<AddPage> {
                 getCamera();
               },
               child: Text(
-                "Take photo",
+                "Take Photo",
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
