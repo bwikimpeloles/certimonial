@@ -1,4 +1,5 @@
 import 'dart:io';
+import '/screen/addphoto.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -69,35 +70,11 @@ class _AddPageState extends State<AddPage> {
               height: 60,
               minWidth: 250,
               onPressed: () {
-                getImage();
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => AddPhoto()));
               },
               child: Text(
                 "Add Image",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.white
-                ),
-              ),
-              color: Colors.deepOrange,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.0),
-                ),
-              ),
-              elevation: 5.0,
-              height: 60,
-              minWidth: 250,
-              onPressed: () {
-                getCamera();
-              },
-              child: Text(
-                "Take Photo",
                 style: TextStyle(
                   fontSize: 20,
                   fontStyle: FontStyle.normal,
@@ -119,14 +96,7 @@ class _AddPageState extends State<AddPage> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
-        'pdf',
-        'doc',
-        'ppt',
-        'pptx',
-        'docx',
-        'mp4',
-        'mp3',
-        'txt'
+        'pdf'
       ],
     );
 
@@ -136,26 +106,6 @@ class _AddPageState extends State<AddPage> {
         file = c;
         name = result.names.toString();
       });
-      uploadFile();
-    }
-  }
-
-  getImage() async {
-    var img = await image.pickImage(source: ImageSource.gallery);
-    setState(() {
-      file = File(img!.path);
-    });
-    if (file != null) {
-      uploadFile();
-    }
-  }
-
-  getCamera() async {
-    var img = await image.pickImage(source: ImageSource.camera);
-    setState(() {
-      file = File(img!.path);
-    });
-    if (file != null) {
       uploadFile();
     }
   }
@@ -192,4 +142,26 @@ class _AddPageState extends State<AddPage> {
       );
     }
   }
+
+/*  Unused function- will delete later
+  getImage() async {
+    var img = await image.pickImage(source: ImageSource.gallery);
+    setState(() {
+      file = File(img!.path);
+    });
+    if (file != null) {
+      uploadFile();
+    }
+  }
+
+  getCamera() async {
+    var img = await image.pickImage(source: ImageSource.camera);
+    setState(() {
+      file = File(img!.path);
+    });
+    if (file != null) {
+      uploadFile();
+    }
+  }
+*/
 }
