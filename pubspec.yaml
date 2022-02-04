@@ -61,7 +61,7 @@ dependencies:
   geolocator: ^8.0.1
   permission_handler: ^8.3.0
 
-
+  syncfusion_flutter_pdfviewer: ^19.4.48-beta
 
 dev_dependencies:
   flutter_test:

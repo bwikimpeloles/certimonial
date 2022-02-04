@@ -14,7 +14,7 @@ class _ChoosePageState extends State<ChoosePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add File or Image"),
+        title: Text("Home"),
       ),
       body: Center(
         child: Column(

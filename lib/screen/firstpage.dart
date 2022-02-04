@@ -1,10 +1,8 @@
-import 'package:certimonial/screen/displayFull.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:certimonial/screen/pdfViewer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 import '/controllers/login_controller.dart';
 import '/screen/login_screen.dart';
 import 'addpage.dart';
@@ -27,7 +25,8 @@ class _FirstPageState extends State<FirstPage> {
   Future<List<Map<String, dynamic>>> _loadFiles() async {
     List<Map<String, dynamic>> files = [];
 
-    final ListResult result = await storage.ref().child(user!.uid).list();
+    final ListResult result =
+        await storage.ref().child('pdf').child(user!.uid).list();
     final List<Reference> allFiles = result.items;
 
     await Future.forEach<Reference>(allFiles, (file) async {
@@ -39,6 +38,13 @@ class _FirstPageState extends State<FirstPage> {
     });
 
     return files;
+  }
+
+  // Delete image
+  Future<void> _delete(String ref) async {
+    await storage.ref(ref).delete();
+    // Rebuild the UI
+    setState(() {});
   }
 
   @override
@@ -69,27 +75,39 @@ class _FirstPageState extends State<FirstPage> {
         future: _loadFiles(),
         builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return GridView.builder(
+            return ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                //gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //crossAxisCount: 3),
                 itemBuilder: (context, index) {
-                  final Map<String, dynamic> image = snapshot.data![index];
+                  final Map<String, dynamic> file = snapshot.data![index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => DisplayFull(
-                                url: image['url'],
+                          builder: (context) => PDFviewer(
+                                url: file['url'],
                               )));
                     },
-                    child: Container(
-                        margin: EdgeInsets.all(4),
-                        child: FadeInImage.memoryNetwork(
-                            fit: BoxFit.fill,
-                            placeholder: kTransparentImage,
-                            image: image['url'])),
+                    child: Card(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: ListTile(
+                        dense: false,
+                        leading: Icon(Icons.picture_as_pdf),
+                        title: Text(file['path'].split('/').last),
+                        //subtitle: Text(file['Location']),
+                        trailing: IconButton(
+                          onPressed: () {
+                            _delete(file['path']);
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 });
           }

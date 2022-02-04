@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import '/screen/firstpage.dart';
 
-//this class is for uploading file or image from gallery and camera
+//this class is for uploading pdf file from device
 
 class AddPage extends StatefulWidget {
   @override
@@ -18,7 +18,6 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   User? user = FirebaseAuth.instance.currentUser;
   File? file;
-  ImagePicker image = ImagePicker();
   String url = "";
   var name;
   var color1 = Colors.redAccent[700];
@@ -27,7 +26,7 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add File or Image"),
+        title: Text(""),
       ),
       body: Center(
         child: Column(
@@ -57,35 +56,6 @@ class _AddPageState extends State<AddPage> {
               ),
               color: Colors.deepOrange,
             ),
-            SizedBox(
-              height: 20,
-            ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20.0),
-                ),
-              ),
-              elevation: 5.0,
-              height: 60,
-              minWidth: 250,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => AddPhoto()));
-              },
-              child: Text(
-                "Add Image",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.white
-                ),
-              ),
-              color: Colors.deepOrange,
-            ),
-            SizedBox(
-              height: 10,
-            ),
           ],
         ),
       ),
@@ -112,9 +82,9 @@ class _AddPageState extends State<AddPage> {
 
   uploadFile() async {
     try {
-      var imagefile =
-      FirebaseStorage.instance.ref().child(user!.uid).child("/$name");
-      UploadTask task = imagefile.putFile(file!);
+      var pdffile =
+      FirebaseStorage.instance.ref().child('pdf').child(user!.uid).child("/$name");
+      UploadTask task = pdffile.putFile(file!);
       TaskSnapshot snapshot = await task;
       url = await snapshot.ref.getDownloadURL();
 
@@ -143,25 +113,4 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
-/*  Unused function- will delete later
-  getImage() async {
-    var img = await image.pickImage(source: ImageSource.gallery);
-    setState(() {
-      file = File(img!.path);
-    });
-    if (file != null) {
-      uploadFile();
-    }
-  }
-
-  getCamera() async {
-    var img = await image.pickImage(source: ImageSource.camera);
-    setState(() {
-      file = File(img!.path);
-    });
-    if (file != null) {
-      uploadFile();
-    }
-  }
-*/
 }
