@@ -1,3 +1,5 @@
+import 'package:certimonial/screen/choosepage.dart';
+
 import '/screen/firstpage.dart';
 
 import 'home_screen.dart';
@@ -92,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FirstPage()),
+                MaterialPageRoute(builder: (context) => ChoosePage()),
               );
             },),
         ),

@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.certimonial">
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="certimonial"
         android:icon="@mipmap/ic_launcher">
@@ -55,6 +58,8 @@
             android:value="2" />
        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyA07RYJMfb7eV2vIYr5hlQf5eB6H5fAmEk"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

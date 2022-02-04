@@ -1,3 +1,4 @@
+import 'package:certimonial/screen/choosepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/screen/firstpage.dart';
 import '../model/user_model.dart';
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () async {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FirstPage()),
+                        MaterialPageRoute(builder: (context) => ChoosePage()),
                       );
                     },),
                 ),
