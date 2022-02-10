@@ -1,5 +1,6 @@
 import 'package:certimonial/screen/firstpage.dart';
 import 'package:certimonial/screen/secondpage.dart';
+import 'package:certimonial/screen/thirdpage.dart';
 import 'package:flutter/material.dart';
 
 class ChoosePage extends StatefulWidget {
@@ -63,6 +64,32 @@ class _ChoosePageState extends State<ChoosePage> {
               },
               child: Text(
                 "Image",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white
+                ),
+              ),
+              color: Colors.deepOrange,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20.0),
+                ),
+              ),
+              elevation: 5.0,
+              height: 60,
+              minWidth: 250,
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => ThirdPage()));
+              },
+              child: Text(
+                "Other Format",
                 style: TextStyle(
                     fontSize: 20,
                     fontStyle: FontStyle.normal,

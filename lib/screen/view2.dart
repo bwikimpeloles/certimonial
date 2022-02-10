@@ -1,17 +1,17 @@
+import 'package:certimonial/screen/thirdpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'secondpage.dart';
-import '/model/database.dart';
+import '/model/database2.dart';
 
-class View extends StatefulWidget {
-  View({Key? key, required this.detail, required this.db}) : super(key: key);
+class View2 extends StatefulWidget {
+  View2({Key? key, required this.detail, required this.db}) : super(key: key);
   Map detail;
-  Database db;
+  Database2 db;
   @override
-  _ViewState createState() => _ViewState();
+  _View2State createState() => _View2State();
 }
 
-class _ViewState extends State<View> {
+class _View2State extends State<View2> {
   TextEditingController descController = new TextEditingController();
   TextEditingController locationController = new TextEditingController();
   TextEditingController datentimeController = new TextEditingController();
@@ -69,7 +69,7 @@ class _ViewState extends State<View> {
                 widget.db.update(widget.detail['id'], descController.text,
                     locationController.text, datentimeController.text);
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SecondPage(),
+                  builder: (context) => ThirdPage(),
                 ));
               },
               child: Text(

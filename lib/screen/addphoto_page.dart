@@ -37,7 +37,7 @@ class _AddPhotoState extends State<AddPhoto> {
                     uploading = true;
                   });
                   uploadFile().whenComplete(
-                        () => Navigator.of(context).push(MaterialPageRoute(
+                    () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SecondPage(),
                     )),
                   );
@@ -59,60 +59,60 @@ class _AddPhotoState extends State<AddPhoto> {
                   itemBuilder: (context, index) {
                     return index == 0
                         ? Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.pink,
-                          child: IconButton(
-                              icon: Icon(
-                                Icons.drive_folder_upload_rounded,
-                                color: Colors.yellow,
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.pink,
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.drive_folder_upload_rounded,
+                                      color: Colors.yellow,
+                                    ),
+                                    onPressed: () => !uploading
+                                        ? chooseImage(ImageSource.gallery)
+                                        : null),
                               ),
-                              onPressed: () => !uploading
-                                  ? chooseImage(ImageSource.gallery)
-                                  : null),
-                        ),
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.purple,
-                          child: IconButton(
-                              icon: Icon(Icons.camera_alt),
-                              color: Colors.lightGreenAccent,
-                              onPressed: () => !uploading
-                                  ? chooseImage(ImageSource.camera)
-                                  : null),
-                        ),
-                      ],
-                    )
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.purple,
+                                child: IconButton(
+                                    icon: Icon(Icons.camera_alt),
+                                    color: Colors.lightGreenAccent,
+                                    onPressed: () => !uploading
+                                        ? chooseImage(ImageSource.camera)
+                                        : null),
+                              ),
+                            ],
+                          )
                         : Container(
-                      margin: EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: FileImage(_image[index - 1]),
-                              fit: BoxFit.cover)),
-                    );
+                            margin: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: FileImage(_image[index - 1]),
+                                    fit: BoxFit.cover)),
+                          );
                   }),
             ),
             uploading
                 ? Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      child: Text(
-                        'uploading...',
-                        style: TextStyle(fontSize: 20),
+                    child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        child: Text(
+                          'uploading...',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CircularProgressIndicator(
-                      value: val,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                    )
-                  ],
-                ))
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator(
+                        value: val,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                      )
+                    ],
+                  ))
                 : Container(),
           ],
         ));
@@ -163,9 +163,9 @@ class _AddPhotoState extends State<AddPhoto> {
           imgRef2.add({
             'url': value,
             'datetime': FieldValue.serverTimestamp(),
-            'description': "Click to edit description",
+            'description': "Click to edit description/remark",
             'location':
-            "${currentLocation.latitude}, ${currentLocation.longitude}",
+                "${currentLocation.latitude}, ${currentLocation.longitude}",
             'datentime': now.day.toString() +
                 "-" +
                 now.month.toString() +

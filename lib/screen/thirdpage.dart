@@ -3,47 +3,34 @@ import 'package:certimonial/model/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'addphoto_page.dart';
+import 'addformat.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/api/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:certimonial/model/database.dart';
+import 'package:certimonial/model/database2.dart';
 import 'login_screen.dart';
-import 'view.dart';
+import 'view2.dart';
 
-class SecondPage extends StatefulWidget {
+class ThirdPage extends StatefulWidget {
   @override
-  _SecondPageState createState() => _SecondPageState();
+  _ThirdPageState createState() => _ThirdPageState();
 }
 
-class _SecondPageState extends State<SecondPage> {
+class _ThirdPageState extends State<ThirdPage> {
   User? user = FirebaseAuth.instance.currentUser;
   late Future<List<FirebaseFile>> futureFiles;
-  late Database db;
+  late Database2 db;
   List docs = [];
 
   bool _checkConfiguration() => true;
-
-  Future getIngredients(String url) async {
-    var list = [];
-    FirebaseFirestore.instance
-        .collection(user!.uid)
-        .where("url", isEqualTo: url)
-        .get()
-        .then((data) => data.docs.forEach((doc) {
-              setState(() {
-                list.add(doc['ingredients']);
-              });
-            }));
-  }
 
   @override
   void initState() {
     super.initState();
     _getLocationPermission();
 
-    futureFiles = FirebaseApi.listAll('${user!.uid}/');
+    futureFiles = FirebaseApi.listAll('allformat/${user!.uid}/');
   }
 
   void _getLocationPermission() async {
@@ -56,7 +43,7 @@ class _SecondPageState extends State<SecondPage> {
   }
 
   initialise(String url) async {
-    db = Database();
+    db = Database2();
     await db.initiliase();
     await db.read2(url).then((value) => {
           setState(() {
@@ -95,7 +82,7 @@ class _SecondPageState extends State<SecondPage> {
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddPhoto()));
+              .push(MaterialPageRoute(builder: (context) => AddFormat()));
         },
       ),
       body: FutureBuilder<List<FirebaseFile>>(
@@ -116,18 +103,18 @@ class _SecondPageState extends State<SecondPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         SizedBox(
-                          height: 40,
+                          height: 10,
                         ),
                         Text(
-                          'Images',
+                          'No duplicated file name allowed. \nTap to open add remark.\nDouble tap to view file.',
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 10,
                         ),
                         const SizedBox(height: 12),
                         Expanded(
@@ -143,19 +130,15 @@ class _SecondPageState extends State<SecondPage> {
                                 topRight: Radius.circular(30),
                               ),
                             ),
-                            child: GridView.builder(
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
                               itemCount: files.length,
                               itemBuilder: (context, index) {
                                 final file = files[index];
 
                                 return buildFile(context, file);
                               },
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                              ),
                             ),
                           ),
                         ),
@@ -172,21 +155,48 @@ class _SecondPageState extends State<SecondPage> {
 
   Widget buildFile(BuildContext context, FirebaseFile file) {
     return GestureDetector(
-      child: GridTile(
-        child: ClipRRect(
-          child: Image.network(
-            file.url,
-            width: 92,
-            height: 92,
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10)),
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 5),
+        child: ListTile(
+          trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Do you want to delete this file?"),
+                        actions: [
+                          FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "No",
+                                style: TextStyle(color: Colors.grey),
+                              )),
+                          FlatButton(
+                              onPressed: () async {
+                                await firebase_storage.FirebaseStorage.instance
+                                    .refFromURL(file.url)
+                                    .delete();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ThirdPage(),
+                                ));
+                              },
+                              child: Text("Yes"))
+                        ],
+                      );
+                    });
+              }),
+          dense: false,
+          leading: Icon(Icons.file_present),
+          title: Text(file.name),
+          //subtitle: Text(file['Location']),
         ),
       ),
+      //add function later
+      onDoubleTap: () {},
       onTap: () async {
         await initialise(file.url);
 
@@ -207,73 +217,38 @@ class _SecondPageState extends State<SecondPage> {
                               SizedBox(
                                 height: 60,
                               ),
-                              Image.network(
-                                file.url,
-                                height: 500,
+                              Text(
+                                'Tap to minimize.',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              Text('Tap to minimize.'),
                               Row(
                                 children: [
                                   SizedBox(
                                     width: 150,
                                   ),
-                                  IconButton(
-                                      icon: Icon(Icons.delete),
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    "Do you want to delete this image?"),
-                                                actions: [
-                                                  FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text(
-                                                        "No",
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      )),
-                                                  FlatButton(
-                                                      onPressed: () async {
-                                                        await firebase_storage
-                                                            .FirebaseStorage
-                                                            .instance
-                                                            .refFromURL(
-                                                                file.url)
-                                                            .delete();
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SecondPage(),
-                                                        ));
-                                                      },
-                                                      child: Text("Yes"))
-                                                ],
-                                              );
-                                            });
-                                      }),
                                 ],
                               ),
                               Expanded(
                                 child: ListView.builder(
-                                  padding: const EdgeInsets.all(20.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 20, 20, 40),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: docs.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
-                                      margin: EdgeInsets.all(10),
+                                      margin:
+                                          EdgeInsets.fromLTRB(10, 20, 10, 40),
                                       child: ListTile(
                                         onTap: () {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => View(
+                                                  builder: (context) => View2(
                                                         detail: docs[index],
                                                         db: db,
                                                         key: null,
