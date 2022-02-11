@@ -1,8 +1,11 @@
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
+import 'package:certimonial/screen/try.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:open_file/open_file.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'addformat.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -106,7 +109,7 @@ class _ThirdPageState extends State<ThirdPage> {
                           height: 10,
                         ),
                         Text(
-                          'No duplicated file name allowed. \nTap to open add remark.\nDouble tap to view file.',
+                          'No duplicated file name allowed. \nTap to open file.\nDouble tap to add remark.',
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -154,6 +157,7 @@ class _ThirdPageState extends State<ThirdPage> {
   }
 
   Widget buildFile(BuildContext context, FirebaseFile file) {
+    var yourLink = file.url;
     return GestureDetector(
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 5),
@@ -196,8 +200,15 @@ class _ThirdPageState extends State<ThirdPage> {
         ),
       ),
       //add function later
-      onDoubleTap: () {},
-      onTap: () async {
+      onTap: () {
+        Navigator.of(context)
+            .push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  Try(url2: file.url,),
+            ));
+      },
+      onDoubleTap: () async {
         await initialise(file.url);
 
         await Navigator.push(

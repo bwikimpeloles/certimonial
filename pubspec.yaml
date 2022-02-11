@@ -60,6 +60,9 @@ dependencies:
   location: ^4.3.0
   geolocator: ^8.0.1
   permission_handler: ^8.3.0
+  open_file: ^3.2.1
+  webview_flutter: ^3.0.0
+  dio: ^4.0.4
 
   syncfusion_flutter_pdfviewer: ^19.4.48-beta
 
