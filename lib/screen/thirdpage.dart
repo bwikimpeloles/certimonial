@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'addformat.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +55,10 @@ class _ThirdPageState extends State<ThirdPage> {
           })
         });
     print(url);
+  }
+
+  launchURL(String url) async {
+    await launch(url);
   }
 
   @override
@@ -109,7 +114,7 @@ class _ThirdPageState extends State<ThirdPage> {
                           height: 10,
                         ),
                         Text(
-                          'No duplicated file name allowed. \nTap to open file.\nDouble tap to add remark.',
+                          'No duplicated file name allowed. \nTap to open file inside browser.\nDouble tap to add remark.',
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -201,15 +206,11 @@ class _ThirdPageState extends State<ThirdPage> {
       ),
       //add function later
       onTap: () {
-        Navigator.of(context)
-            .push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  Try(url2: file.url,),
-            ));
+        launchURL(file.url);
       },
       onDoubleTap: () async {
-        await initialise(file.url);
+        await initialise(
+            "https://drive.google.com/viewerng/viewer?embedded=true&url=${file.url}");
 
         await Navigator.push(
             context,
