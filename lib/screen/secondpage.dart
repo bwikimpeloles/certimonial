@@ -212,11 +212,7 @@ class _SecondPageState extends State<SecondPage> {
                                 height: 500,
                               ),
                               Text('Tap to minimize.'),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 150,
-                                  ),
+
                                   IconButton(
                                       icon: Icon(Icons.delete),
                                       onPressed: () {
@@ -256,8 +252,7 @@ class _SecondPageState extends State<SecondPage> {
                                               );
                                             });
                                       }),
-                                ],
-                              ),
+
                               Expanded(
                                 child: ListView.builder(
                                   padding: const EdgeInsets.all(20.0),

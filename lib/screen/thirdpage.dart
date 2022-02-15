@@ -1,15 +1,12 @@
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
-import 'package:certimonial/screen/try.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'addformat.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '/api/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:certimonial/model/database2.dart';
@@ -210,7 +207,7 @@ class _ThirdPageState extends State<ThirdPage> {
       },
       onDoubleTap: () async {
         await initialise(
-            "https://drive.google.com/viewerng/viewer?embedded=true&url=${file.url}");
+            file.url);
 
         await Navigator.push(
             context,
