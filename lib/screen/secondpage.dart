@@ -1,5 +1,6 @@
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
+import 'package:certimonial/screen/choosepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -71,6 +72,14 @@ class _SecondPageState extends State<SecondPage> {
     return Scaffold(
       backgroundColor: Colors.deepOrange,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          tooltip: 'Return to previous page',
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ChoosePage()));
+          },
+        ),
         title: const Text('Dashboard'),
         actions: <Widget>[
           FlatButton.icon(
