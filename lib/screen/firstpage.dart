@@ -205,7 +205,7 @@ class _FirstPageState extends State<FirstPage> {
                     });
               }),
           dense: false,
-          leading: Icon(Icons.file_present),
+          leading: Icon(Icons.picture_as_pdf),
           title: Text(file.name),
           //subtitle: Text(file['Location']),
         ),
