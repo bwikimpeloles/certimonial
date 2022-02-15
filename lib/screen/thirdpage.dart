@@ -1,15 +1,22 @@
+
+import 'dart:io';
+
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
+import 'package:dio/dio.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'addformat.dart';
 import 'package:provider/provider.dart';
 import '/api/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:certimonial/model/database2.dart';
+import 'choosepage.dart';
 import 'login_screen.dart';
 import 'view2.dart';
 
@@ -58,11 +65,56 @@ class _ThirdPageState extends State<ThirdPage> {
     await launch(url);
   }
 
+  Future openFile({required String url, String? fileName}) async{
+    final file = await downloadFile(url, fileName!);
+    if (file == null) return;
+    print('Path: ${file.path}');
+    OpenFile.open(file.path);
+  }
+
+  Future<File?> downloadFile(String url, String name) async{
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File('${appStorage.path}/$name');
+
+    try {
+      final response = await Dio().get(
+        url,
+        options: Options(responseType: ResponseType.bytes,followRedirects: false, receiveTimeout: 0),
+      );
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  String removeLastCharacter(String str) {
+    String result = str;
+    if ((str != null) && (str.length > 0) && str.endsWith(']')) {
+      result = str.substring(0, str.length - 1);
+    }
+    else{
+      result=str;
+    }
+    print(result);
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepOrange,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          tooltip: 'Return to previous page',
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ChoosePage()));
+          },
+        ),
         title: const Text('Dashboard'),
         actions: <Widget>[
           FlatButton.icon(
@@ -111,7 +163,7 @@ class _ThirdPageState extends State<ThirdPage> {
                           height: 10,
                         ),
                         Text(
-                          'No duplicated file name allowed. \nTap to open file inside browser.\nDouble tap to add remark.',
+                          'No duplicated file name allowed. \nTap to open file. Double tap to add remark.\nFile will not open if no appropriate document reader installed.',
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -203,7 +255,7 @@ class _ThirdPageState extends State<ThirdPage> {
       ),
       //add function later
       onTap: () {
-        launchURL(file.url);
+        openFile(url: file.url,fileName: removeLastCharacter(file.name));
       },
       onDoubleTap: () async {
         await initialise(

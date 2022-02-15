@@ -64,6 +64,9 @@ dependencies:
   webview_flutter: ^3.0.0
   dio: ^4.0.4
   url_launcher: ^6.0.20
+  share_plus: ^3.0.4
+  flutter_filereader: ^3.0.0
+
 
   syncfusion_flutter_pdfviewer: ^19.4.48-beta
 

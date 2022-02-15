@@ -1,7 +1,12 @@
+import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/screen/firstpage.dart';
 import 'package:certimonial/screen/secondpage.dart';
 import 'package:certimonial/screen/thirdpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'login_screen.dart';
 
 class ChoosePage extends StatefulWidget {
   const ChoosePage({Key? key}) : super(key: key);
@@ -16,6 +21,25 @@ class _ChoosePageState extends State<ChoosePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          FlatButton.icon(
+              onPressed: () async {
+                await Provider.of<LoginController>(context, listen: false)
+                    .logout();
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
       ),
       body: Center(
         child: Column(

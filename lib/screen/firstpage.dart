@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import '/api/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:certimonial/model/database3.dart';
+import 'choosepage.dart';
 import 'login_screen.dart';
 import 'view3.dart';
 
@@ -72,6 +73,14 @@ class _FirstPageState extends State<FirstPage> {
     return Scaffold(
       backgroundColor: Colors.deepOrange,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          tooltip: 'Return to previous page',
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ChoosePage()));
+          },
+        ),
         title: const Text('Dashboard'),
         actions: <Widget>[
           FlatButton.icon(
