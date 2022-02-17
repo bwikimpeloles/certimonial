@@ -1,3 +1,5 @@
+import 'package:certimonial/screen/fingerprint_auth.dart';
+
 import 'screen/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.deepOrange,
         ),
-        home: LoginScreen(),
+        home: Auth_FP(),
       ),
     );
   }
