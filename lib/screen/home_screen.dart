@@ -1,6 +1,5 @@
 import 'package:certimonial/screen/choosepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '/screen/firstpage.dart';
 import '../model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -69,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                   height: 50,
                   child: ActionChip(
-                      avatar: Icon(Icons.dashboard),
-                      label: Text("Continue to Dashboard"),
+                      avatar: Icon(Icons.home),
+                      label: Text("Continue to Home"),
                     onPressed: () async {
                       Navigator.push(
                         context,

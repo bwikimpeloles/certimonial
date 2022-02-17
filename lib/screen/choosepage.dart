@@ -1,5 +1,4 @@
 import 'package:certimonial/controllers/login_controller.dart';
-import 'package:certimonial/screen/firstpage.dart';
 import 'package:certimonial/screen/secondpage.dart';
 import 'package:certimonial/screen/thirdpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,26 +49,6 @@ class _ChoosePageState extends State<ChoosePage> {
               height: 200,
               child: Image.asset("assets/logo.png", fit: BoxFit.contain),
             ),
-            MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              elevation: 5.0,
-              height: 60,
-              minWidth: 250,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => FirstPage()));
-              },
-              child: Text(
-                "PDF",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.white
-                ),
-              ),
-              color: Colors.deepOrange,
-            ),
             SizedBox(
               height: 20,
             ),
@@ -83,16 +62,15 @@ class _ChoosePageState extends State<ChoosePage> {
               height: 60,
               minWidth: 250,
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => SecondPage()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SecondPage()));
               },
               child: Text(
                 "Image",
                 style: TextStyle(
                     fontSize: 20,
                     fontStyle: FontStyle.normal,
-                    color: Colors.white
-                ),
+                    color: Colors.white),
               ),
               color: Colors.deepOrange,
             ),
@@ -113,12 +91,11 @@ class _ChoosePageState extends State<ChoosePage> {
                     .push(MaterialPageRoute(builder: (context) => ThirdPage()));
               },
               child: Text(
-                "Other Format",
+                "Document",
                 style: TextStyle(
                     fontSize: 20,
                     fontStyle: FontStyle.normal,
-                    color: Colors.white
-                ),
+                    color: Colors.white),
               ),
               color: Colors.deepOrange,
             ),

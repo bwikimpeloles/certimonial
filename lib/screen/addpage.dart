@@ -1,12 +1,10 @@
 import 'dart:io';
-//import '/screen/addphoto.dart';
+import 'package:certimonial/screen/choosepage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
-import '/screen/firstpage.dart';
 
 //this class is for uploading pdf file from device
 
@@ -97,7 +95,7 @@ class _AddPageState extends State<AddPage> {
         );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FirstPage()),
+          MaterialPageRoute(builder: (context) => ChoosePage()),
         );
       } else {
         Fluttertoast.showToast(

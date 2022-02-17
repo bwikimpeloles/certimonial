@@ -1,4 +1,4 @@
-import 'package:certimonial/screen/firstpage.dart';
+import 'package:certimonial/screen/choosepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '/model/database3.dart';
@@ -69,7 +69,7 @@ class _View3State extends State<View3> {
                 widget.db.update(widget.detail['id'], descController.text,
                     locationController.text, datentimeController.text);
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => FirstPage(),
+                  builder: (context) => ChoosePage(),
                 ));
               },
               child: Text(

@@ -1,7 +1,4 @@
 import 'package:certimonial/screen/choosepage.dart';
-
-import '/screen/firstpage.dart';
-
 import 'home_screen.dart';
 import 'registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(
           height: 50,
           child: ActionChip(
-            avatar: Icon(Icons.dashboard),
-            label: Text("Continue to Dashboard"),
+            avatar: Icon(Icons.home),
+            label: Text("Continue to Home"),
             onPressed: () async {
               Navigator.push(
                 context,
