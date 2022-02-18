@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        routes: {'/addfile': (BuildContext context) => AddFormat()},
+        routes: {'/add-file': (BuildContext context) => AddFormat()},
         title: 'Certimonial',
         debugShowCheckedModeBanner:false,
         theme: ThemeData(
@@ -50,7 +50,7 @@ Future<void> initDynamicLinks() async {
         final Uri? deeplink = dynamicLink?.link;
         if(deeplink!=null) {
           print("deeplink data " + deeplink.queryParameters.values.first);
-          Get.toNamed('/addfile');
+          Get.toNamed('/add-file');
         }
         if(deeplink!=null) {
           print("deeplink data " + deeplink.queryParameters.values.first);
