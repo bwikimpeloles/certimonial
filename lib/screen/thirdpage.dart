@@ -111,10 +111,11 @@ class _ThirdPageState extends State<ThirdPage> {
     }
   }
 
-  String removeLastCharacter(String str) {
+  String removeFirstLastCharacter(String str) {
     String result = str;
-    if ((str != null) && (str.length > 0) && str.endsWith(']')) {
-      result = str.substring(0, str.length - 1);
+    if ((str != null) && (str.length > 0) && str.startsWith('[') && str.endsWith(']')) {
+      String temp= str.substring(1);
+      result = temp.substring(0, temp.length - 1);
     } else {
       result = str;
     }
@@ -276,7 +277,7 @@ class _ThirdPageState extends State<ThirdPage> {
                   onPressed: () {
                     shareFile(
                         url: file.url,
-                        fileName: removeLastCharacter(file.name));
+                        fileName: removeFirstLastCharacter(file.name));
                   },
                   icon: Icon(Icons.share))
             ],
@@ -289,7 +290,7 @@ class _ThirdPageState extends State<ThirdPage> {
       ),
       //add function later
       onTap: () {
-        openFile(url: file.url, fileName: removeLastCharacter(file.name));
+        openFile(url: file.url, fileName: removeFirstLastCharacter(file.name));
       },
       onDoubleTap: () async {
         await initialise(file.url);
