@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '/screen/thirdpage.dart';
@@ -54,6 +55,22 @@ class _AddFormatState extends State<AddFormat> {
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position;
+  }
+
+  Future<String> _getAddress() async {
+    Position position = await _getCurrentLocation();
+    List<Placemark> newPlace =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark placeMark = newPlace[0];
+    String? name = placeMark.name;
+    String? subLocality = placeMark.subLocality;
+    String? locality = placeMark.locality;
+    String? postalCode = placeMark.postalCode;
+    String? country = placeMark.country;
+    String address = "$name, $subLocality, $postalCode $locality, $country";
+
+    return address;
   }
 
   @override
@@ -126,11 +143,12 @@ class _AddFormatState extends State<AddFormat> {
       TaskSnapshot snapshot = await task;
       url = await snapshot.ref.getDownloadURL();
       currentLocation = await _getCurrentLocation();
+      String currentAddress = await _getAddress();
       fileRef.add({
         'url': url,
         'datetime': FieldValue.serverTimestamp(),
         'description': "Click to edit description/remark",
-        'location': "${currentLocation.latitude}, ${currentLocation.longitude}",
+        'location': currentAddress,
         'datentime': now.day.toString() +
             "-" +
             now.month.toString() +

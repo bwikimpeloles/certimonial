@@ -324,9 +324,8 @@ class _SecondPageState extends State<SecondPage> {
                                         subtitle: Wrap(
                                           spacing: 12,
                                           children: <Widget>[
-                                            Text("Location: (" +
-                                                docs[index]['location'] +
-                                                ")"),
+                                            Text("Location: " +
+                                                docs[index]['location']),
                                             Text("\n"),
                                             Text("Date/Time: " +
                                                 docs[index]['datentime']),

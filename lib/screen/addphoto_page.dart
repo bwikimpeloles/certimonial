@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -146,9 +147,26 @@ class _AddPhotoState extends State<AddPhoto> {
     return position;
   }
 
+  Future<String> _getAddress() async {
+    Position position = await _getCurrentLocation();
+    List<Placemark> newPlace =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark placeMark = newPlace[0];
+    String? name = placeMark.name;
+    String? subLocality = placeMark.subLocality;
+    String? locality = placeMark.locality;
+    String? postalCode = placeMark.postalCode;
+    String? country = placeMark.country;
+    String address = "$name, $subLocality, $postalCode $locality, $country";
+
+    return address;
+  }
+
   Future uploadFile() async {
     int i = 1;
     currentLocation = await _getCurrentLocation();
+    String currentAddress = await _getAddress();
 
     for (var img in _image) {
       setState(() {
@@ -159,13 +177,11 @@ class _AddPhotoState extends State<AddPhoto> {
           .child('${user!.uid}/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-
           imgRef2.add({
             'url': value,
             'datetime': FieldValue.serverTimestamp(),
             'description': "Click to edit description/remark",
-            'location':
-                "${currentLocation.latitude}, ${currentLocation.longitude}",
+            'location': currentAddress,
             'datentime': now.day.toString() +
                 "-" +
                 now.month.toString() +

@@ -69,8 +69,8 @@ dependencies:
   firebase_dynamic_links: ^4.0.6
   get: ^4.6.1
 
+  geocoding: ^2.0.2
 
-  syncfusion_flutter_pdfviewer: ^19.4.48-beta
 
 dev_dependencies:
   flutter_test:
