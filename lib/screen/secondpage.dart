@@ -43,7 +43,8 @@ class _SecondPageState extends State<SecondPage> {
     File(path).writeAsBytesSync(bytes);
 
     await Share.shareFiles([path],
-        text: fileName,
+        text:
+            '$fileName.\nDownload your file and click this link to add your file in Certimonial: https://certimonial.page.link/add-file',
         subject: 'Certimonial File Share',
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
@@ -98,8 +99,8 @@ class _SecondPageState extends State<SecondPage> {
           icon: Icon(Icons.arrow_back),
           tooltip: 'Return to previous page',
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ChoosePage()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ChoosePage()));
           },
         ),
         title: const Text('Dashboard'),
@@ -243,60 +244,56 @@ class _SecondPageState extends State<SecondPage> {
                                 height: 500,
                               ),
                               Text('Tap to minimize.'),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                          icon: Icon(Icons.delete),
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        "Do you want to delete this image?"),
-                                                    actions: [
-                                                      FlatButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            "No",
-                                                            style: TextStyle(
-                                                                color: Colors.grey),
-                                                          )),
-                                                      FlatButton(
-                                                          onPressed: () async {
-                                                            await firebase_storage
-                                                                .FirebaseStorage
-                                                                .instance
-                                                                .refFromURL(
-                                                                    file.url)
-                                                                .delete();
-                                                            Navigator.of(context)
-                                                                .push(
-                                                                    MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  SecondPage(),
-                                                            ));
-                                                          },
-                                                          child: Text("Yes"))
-                                                    ],
-                                                  );
-                                                });
-                                          }),
-
-                              IconButton(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Do you want to delete this image?"),
+                                                actions: [
+                                                  FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text(
+                                                        "No",
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      )),
+                                                  FlatButton(
+                                                      onPressed: () async {
+                                                        await firebase_storage
+                                                            .FirebaseStorage
+                                                            .instance
+                                                            .refFromURL(
+                                                                file.url)
+                                                            .delete();
+                                                        Navigator.of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SecondPage(),
+                                                        ));
+                                                      },
+                                                      child: Text("Yes"))
+                                                ],
+                                              );
+                                            });
+                                      }),
+                                  IconButton(
                                       onPressed: () {
                                         shareFile(
-                                            url: file.url,
-                                            fileName: file.name);
+                                            url: file.url, fileName: file.name);
                                       },
                                       icon: Icon(Icons.share)),
-                                    ],
-                                  ),
-
+                                ],
+                              ),
                               Expanded(
                                 child: ListView.builder(
                                   padding: const EdgeInsets.all(20.0),

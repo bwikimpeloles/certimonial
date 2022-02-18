@@ -85,7 +85,8 @@ class _ThirdPageState extends State<ThirdPage> {
     File(path).writeAsBytesSync(bytes);
 
     await Share.shareFiles([path],
-        text: fileName,
+        text:
+            '$fileName.\nDownload your file and click this link to add your file in Certimonial: https://certimonial.page.link/add-file',
         subject: 'Certimonial File Share',
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
@@ -113,8 +114,11 @@ class _ThirdPageState extends State<ThirdPage> {
 
   String removeFirstLastCharacter(String str) {
     String result = str;
-    if ((str != null) && (str.length > 0) && str.startsWith('[') && str.endsWith(']')) {
-      String temp= str.substring(1);
+    if ((str != null) &&
+        (str.length > 0) &&
+        str.startsWith('[') &&
+        str.endsWith(']')) {
+      String temp = str.substring(1);
       result = temp.substring(0, temp.length - 1);
     } else {
       result = str;

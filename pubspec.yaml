@@ -66,6 +66,8 @@ dependencies:
   url_launcher: ^6.0.20
   share_plus: ^3.0.4
   flutter_filereader: ^3.0.0
+  firebase_dynamic_links: ^4.0.6
+  get: ^4.6.1
 
 
   syncfusion_flutter_pdfviewer: ^19.4.48-beta

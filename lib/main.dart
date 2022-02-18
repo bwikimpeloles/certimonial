@@ -1,5 +1,8 @@
+import 'package:certimonial/screen/addformat.dart';
 import 'package:certimonial/screen/fingerprint_auth.dart';
-
+import 'package:certimonial/screen/registration_screen.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:get/get.dart';
 import 'screen/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +30,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        routes: {'/addfile': (BuildContext context) => AddFormat()},
         title: 'Certimonial',
         debugShowCheckedModeBanner:false,
         theme: ThemeData(
@@ -37,3 +41,27 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+Future<void> initDynamicLinks() async {
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+//OnSuccess Here
+      onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+        final Uri? deeplink = dynamicLink?.link;
+        if(deeplink!=null) {
+          print("deeplink data " + deeplink.queryParameters.values.first);
+          Get.toNamed('/addfile');
+        }
+        if(deeplink!=null) {
+          print("deeplink data " + deeplink.queryParameters.values.first);
+        }
+      };
+    }).onError((error) async{
+//onError Here
+    print(error);
+
+    });
+  }
+
+
+

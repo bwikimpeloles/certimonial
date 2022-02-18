@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:certimonial/screen/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,10 +31,23 @@ class _AddFormatState extends State<AddFormat> {
   @override
   void initState() {
     super.initState();
-    fileRef = FirebaseFirestore.instance
-        .collection('allformat')
-        .doc(user!.uid)
-        .collection(user!.uid);
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Fluttertoast.showToast(
+          msg: "User not logged in. Login first before using Certimonial :)",
+          textColor: Colors.red,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      } else {
+        fileRef = FirebaseFirestore.instance
+            .collection('allformat')
+            .doc(user.uid)
+            .collection(user.uid);
+      }
+    });
   }
 
   Future<Position> _getCurrentLocation() async {
@@ -102,6 +116,7 @@ class _AddFormatState extends State<AddFormat> {
         textColor: Colors.red,
         toastLength: Toast.LENGTH_LONG,
       );
+
       var allfile = FirebaseStorage.instance
           .ref()
           .child('allformat')
