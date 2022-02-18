@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
 import 'package:certimonial/screen/choosepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:path_provider/path_provider.dart';
 import 'addphoto_page.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +15,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:certimonial/model/database.dart';
 import 'login_screen.dart';
 import 'view.dart';
+import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 
 class SecondPage extends StatefulWidget {
   @override
@@ -25,6 +30,23 @@ class _SecondPageState extends State<SecondPage> {
   List docs = [];
 
   bool _checkConfiguration() => true;
+
+  Future shareFile({required String url, String? fileName}) async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final bytes = response.bodyBytes;
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/$fileName';
+
+    File(path).writeAsBytesSync(bytes);
+
+    await Share.shareFiles([path],
+        text: fileName,
+        subject: 'Certimonial File Share',
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+  }
 
   Future getIngredients(String url) async {
     var list = [];
@@ -222,45 +244,58 @@ class _SecondPageState extends State<SecondPage> {
                               ),
                               Text('Tap to minimize.'),
 
-                                  IconButton(
-                                      icon: Icon(Icons.delete),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        "Do you want to delete this image?"),
+                                                    actions: [
+                                                      FlatButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: Text(
+                                                            "No",
+                                                            style: TextStyle(
+                                                                color: Colors.grey),
+                                                          )),
+                                                      FlatButton(
+                                                          onPressed: () async {
+                                                            await firebase_storage
+                                                                .FirebaseStorage
+                                                                .instance
+                                                                .refFromURL(
+                                                                    file.url)
+                                                                .delete();
+                                                            Navigator.of(context)
+                                                                .push(
+                                                                    MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  SecondPage(),
+                                                            ));
+                                                          },
+                                                          child: Text("Yes"))
+                                                    ],
+                                                  );
+                                                });
+                                          }),
+
+                              IconButton(
                                       onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    "Do you want to delete this image?"),
-                                                actions: [
-                                                  FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text(
-                                                        "No",
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      )),
-                                                  FlatButton(
-                                                      onPressed: () async {
-                                                        await firebase_storage
-                                                            .FirebaseStorage
-                                                            .instance
-                                                            .refFromURL(
-                                                                file.url)
-                                                            .delete();
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SecondPage(),
-                                                        ));
-                                                      },
-                                                      child: Text("Yes"))
-                                                ],
-                                              );
-                                            });
-                                      }),
+                                        shareFile(
+                                            url: file.url,
+                                            fileName: file.name);
+                                      },
+                                      icon: Icon(Icons.share)),
+                                    ],
+                                  ),
 
                               Expanded(
                                 child: ListView.builder(
