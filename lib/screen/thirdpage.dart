@@ -1,10 +1,10 @@
-
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:certimonial/controllers/login_controller.dart';
 import 'package:certimonial/model/firebase_storage.dart';
 import 'package:dio/dio.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -19,6 +19,7 @@ import 'package:certimonial/model/database2.dart';
 import 'choosepage.dart';
 import 'login_screen.dart';
 import 'view2.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ThirdPage extends StatefulWidget {
   @override
@@ -65,21 +66,41 @@ class _ThirdPageState extends State<ThirdPage> {
     await launch(url);
   }
 
-  Future openFile({required String url, String? fileName}) async{
+  Future openFile({required String url, String? fileName}) async {
     final file = await downloadFile(url, fileName!);
     if (file == null) return;
     print('Path: ${file.path}');
     OpenFile.open(file.path);
   }
 
-  Future<File?> downloadFile(String url, String name) async{
+  Future shareFile({required String url, String? fileName}) async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final bytes = response.bodyBytes;
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/$fileName';
+
+    File(path).writeAsBytesSync(bytes);
+
+    await Share.shareFiles([path],
+        text: fileName,
+        subject: 'Certimonial File Share',
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+  }
+
+  Future<File?> downloadFile(String url, String name) async {
     final appStorage = await getApplicationDocumentsDirectory();
     final file = File('${appStorage.path}/$name');
 
     try {
       final response = await Dio().get(
         url,
-        options: Options(responseType: ResponseType.bytes,followRedirects: false, receiveTimeout: 0),
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0),
       );
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
@@ -94,9 +115,8 @@ class _ThirdPageState extends State<ThirdPage> {
     String result = str;
     if ((str != null) && (str.length > 0) && str.endsWith(']')) {
       result = str.substring(0, str.length - 1);
-    }
-    else{
-      result=str;
+    } else {
+      result = str;
     }
     print(result);
     return result;
@@ -111,8 +131,8 @@ class _ThirdPageState extends State<ThirdPage> {
           icon: Icon(Icons.arrow_back),
           tooltip: 'Return to previous page',
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ChoosePage()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ChoosePage()));
           },
         ),
         title: const Text('Dashboard'),
@@ -216,37 +236,51 @@ class _ThirdPageState extends State<ThirdPage> {
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 5),
         child: ListTile(
-          trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Do you want to delete this file?"),
-                        actions: [
-                          FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "No",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          FlatButton(
-                              onPressed: () async {
-                                await firebase_storage.FirebaseStorage.instance
-                                    .refFromURL(file.url)
-                                    .delete();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ThirdPage(),
-                                ));
-                              },
-                              child: Text("Yes"))
-                        ],
-                      );
-                    });
-              }),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Do you want to delete this file?"),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "No",
+                                    style: TextStyle(color: Colors.grey),
+                                  )),
+                              FlatButton(
+                                  onPressed: () async {
+                                    await firebase_storage
+                                        .FirebaseStorage.instance
+                                        .refFromURL(file.url)
+                                        .delete();
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => ThirdPage(),
+                                    ));
+                                  },
+                                  child: Text("Yes"))
+                            ],
+                          );
+                        });
+                  }),
+              IconButton(
+                  onPressed: () {
+                    shareFile(
+                        url: file.url,
+                        fileName: removeLastCharacter(file.name));
+                  },
+                  icon: Icon(Icons.share))
+            ],
+          ),
           dense: false,
           leading: Icon(Icons.file_present),
           title: Text(file.name),
@@ -255,11 +289,10 @@ class _ThirdPageState extends State<ThirdPage> {
       ),
       //add function later
       onTap: () {
-        openFile(url: file.url,fileName: removeLastCharacter(file.name));
+        openFile(url: file.url, fileName: removeLastCharacter(file.name));
       },
       onDoubleTap: () async {
-        await initialise(
-            file.url);
+        await initialise(file.url);
 
         await Navigator.push(
             context,
