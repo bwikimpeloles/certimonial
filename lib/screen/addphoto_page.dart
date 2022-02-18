@@ -19,7 +19,7 @@ class _AddPhotoState extends State<AddPhoto> {
   DateTime now = DateTime.now();
   bool uploading = false;
   double val = 0;
-  late CollectionReference imgRef;
+
   late CollectionReference imgRef2;
   late firebase_storage.Reference ref;
 
@@ -159,7 +159,7 @@ class _AddPhotoState extends State<AddPhoto> {
           .child('${user!.uid}/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value});
+
           imgRef2.add({
             'url': value,
             'datetime': FieldValue.serverTimestamp(),
@@ -187,7 +187,7 @@ class _AddPhotoState extends State<AddPhoto> {
   @override
   void initState() {
     super.initState();
-    imgRef = FirebaseFirestore.instance.collection('imageURLs');
+
     imgRef2 = FirebaseFirestore.instance.collection(user!.uid);
   }
 }
